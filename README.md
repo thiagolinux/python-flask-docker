@@ -1,6 +1,8 @@
 # python-flask-docker
 Basic Python Flask app in Docker which prints the hostname and IP of the container
 
+####  OK
+
 ### Build application
 Build the Docker image manually by cloning the Git repo.
 ```
