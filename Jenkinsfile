@@ -32,7 +32,7 @@ pipeline {
     }
     stage('Build Release') {
       when {
-        branch 'master'
+        branch 'develop'
       }
       steps {
         container('python') {
@@ -51,9 +51,9 @@ pipeline {
         }
       }
     }
-    stage('Promote to Environments') {
+    stage('Promote to Develop') {
       when {
-        branch 'master'
+        branch 'develop'
       }
       steps {
         container('python') {
@@ -64,7 +64,25 @@ pipeline {
             sh "jx step helm release"
 
             // promote through all 'Auto' promotion Environments
-            sh "jx promote -b --all-auto --no-poll --timeout 1h --version \$(cat ../../VERSION)"
+            sh "jx promote -b --env staging --no-poll --timeout 1h --version \$(cat ../../VERSION)"
+          }
+        }
+      }
+    }
+    stage('Promote to Prod') {
+      when {
+        branch 'master'
+      }
+      steps {
+        container('python') {
+          dir('./charts/python-flask-docker') {
+            //sh "jx step changelog --version v\$(cat ../../VERSION)"
+
+            // release the helm chart
+            //sh "jx step helm release"
+
+            // promote through all 'Auto' promotion Environments
+            sh "jx promote -b --env production --no-poll --timeout 1h --version \$(cat ../../VERSION)"
           }
         }
       }
@@ -76,3 +94,4 @@ pipeline {
         }
   }
 }
+
