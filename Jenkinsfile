@@ -64,7 +64,8 @@ pipeline {
             sh "jx step helm release"
 
             // promote through all 'Auto' promotion Environments
-            sh "jx promote -b --all-auto --no-poll --timeout 1h --version \$(cat ../../VERSION)"
+            //sh "jx promote -b --all-auto --no-poll --timeout 1h --version \$(cat ../../VERSION)"
+            sh "jx promote -b --env env-gitlab --no-poll --timeout 1h --version \$(cat ../../VERSION)"
           }
         }
       }
